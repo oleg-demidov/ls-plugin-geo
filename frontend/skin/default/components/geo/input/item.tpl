@@ -1,0 +1,1 @@
+{component 'property:property' template="input.property.{$property->getType()}" property=$property}
