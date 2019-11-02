@@ -25,7 +25,7 @@
  * @package application.blocks
  * @since 2.0
  */
-class PluginProperty_BlockPropertyUpdate extends Block
+class PluginGeo_BlockGeo extends Block
 {
     /**
      * Запуск обработки
@@ -45,16 +45,16 @@ class PluginProperty_BlockPropertyUpdate extends Block
             /**
              * Определяем нужное нам поведение
              */
-            if ($oBehavior instanceof PluginProperty_ModuleProperty_BehaviorEntity) {
+            if ($oBehavior instanceof PluginGeo_ModuleGeo_BehaviorEntity) {
                 /**
                  * Если в параметрах был тип, то переопределяем значение. Это необходимо для корректной работы, когда тип динамический.
                  */
                 if ($sTargetType) {
                     $oBehavior->setParam('target_type', $sTargetType);
                 }
-                $aProperties = $this->PluginProperty_Property_GetPropertiesForUpdate($oBehavior->getPropertyTargetType(),
+                $aProperties = $this->PluginGeo_Geo_GetGeoForUpdate($oBehavior->getPropertyTargetType(),
                     $oTarget->getId());                
-                $this->Viewer_Assign('properties', $aProperties, true);
+                $this->Viewer_Assign('geo', $aProperties, true);
                 break;
             }
         }

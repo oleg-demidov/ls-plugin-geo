@@ -9,7 +9,7 @@ class PluginGeo_HookAdmin extends Hook {
         /**
          * Хук на отображение админки
          */
-        $this->AddHook('init_action_admin', 'InitActionAdmin');
+//        $this->AddHook('init_action_admin', 'InitActionAdmin');
     }
 
     public function InitActionAdmin($aParams) { 

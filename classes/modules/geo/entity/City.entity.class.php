@@ -19,14 +19,11 @@
  *
  */
 
-/**
- * Сущность дополнительного поля
- *
- * @package application.modules.property
- * @since 2.0
- */
-class PluginGeo_ModuleGeo_EntityGeo extends EntityORM
+class PluginGeo_ModuleGeo_EntityCity extends EntityORM
 {
 
-   
+    protected $aRelations = [
+        'region' =>     [ self::RELATION_TYPE_BELONGS_TO, "PluginGeo_ModuleGeo_EntityRegion", 'region_id' ],
+        'country' =>    [ self::RELATION_TYPE_BELONGS_TO, "PluginGeo_ModuleGeo_EntityCountry", 'country_id' ],
+    ];
 }

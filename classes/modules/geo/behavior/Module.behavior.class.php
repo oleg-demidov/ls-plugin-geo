@@ -25,7 +25,7 @@
  * @package application.modules.property
  * @since 2.0
  */
-class PluginProperty_ModuleProperty_BehaviorModule extends Behavior
+class PluginGeo_ModuleGeo_BehaviorModule extends Behavior
 {
     
     /**
@@ -65,7 +65,7 @@ class PluginProperty_ModuleProperty_BehaviorModule extends Behavior
     {
         $aEntities = $aParams['aEntities'];
         $aFilter = $aParams['aFilter'];
-        $this->PluginProperty_Property_RewriteGetItemsByFilter($aEntities, $this, $aFilter);
+        $this->PluginGeo_Geo_RewriteGetItemsByFilter($aEntities, $this, $aFilter);
     }
 
     /**
@@ -75,7 +75,7 @@ class PluginProperty_ModuleProperty_BehaviorModule extends Behavior
      */
     public function CallbackGetItemsByFilterBefore($aParams)
     {
-        $aFilter = $this->PluginProperty_Property_RewriteFilter($aParams['aFilter'], $this, $aParams['sEntityFull']);
+        $aFilter = $this->PluginGeo_Geo_RewriteFilter($aParams['aFilter'], $this, $aParams['sEntityFull']);
         $aParams['aFilter'] = $aFilter;
     }
     

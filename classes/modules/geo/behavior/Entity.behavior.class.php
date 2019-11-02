@@ -25,7 +25,7 @@
  * @package application.modules.property
  * @since 2.0
  */
-class PluginProperty_ModuleProperty_BehaviorEntity extends Behavior
+class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
 {
     /**
      * Дефолтные параметры
@@ -33,7 +33,8 @@ class PluginProperty_ModuleProperty_BehaviorEntity extends Behavior
      * @var array
      */
     protected $aParams = array(
-        'target_type' => '',
+        'target_type'   => '',
+        'field'         => 'geo'
     );
     /**
      * Список хуков
@@ -56,8 +57,8 @@ class PluginProperty_ModuleProperty_BehaviorEntity extends Behavior
     {
         if ($aParams['bResult']) {
             $aFields = $aParams['aFields'];
-            if (is_null($aFields) or in_array('properties', $aFields)) {
-                $oValidator = $this->Validate_CreateValidator('properties_check', $this, 'properties');
+            if (is_null($aFields) or in_array('geo', $aFields)) {
+                $oValidator = $this->Validate_CreateValidator('geo_check', $this, $this->getParam('field'));
                 $oValidator->validateEntity($this->oObject, $aFields);
                 $aParams['bResult'] = !$this->oObject->_hasValidateErrors();
             }
@@ -79,71 +80,19 @@ class PluginProperty_ModuleProperty_BehaviorEntity extends Behavior
      */
     public function CallbackAfterDelete()
     {
-        $this->PluginProperty_Property_RemovePropertiesValue($this->oObject, $this);
+        $this->PluginGeo_Geo_RemoveGeo($this->oObject, $this);
     }
 
-    /**
-     * Дополнительный метод для сущности
-     * Запускает валидацию дополнительных полей
-     *
-     * @return mixed
-     */
-    public function ValidatePropertiesCheck()
+   
+    public function ValidateGeoCheck()
     {
-        return $this->PluginProperty_Property_ValidateEntityPropertiesCheck($this->oObject, $this);
+        return $this->PluginGeo_Geo_ValidateEntityGeo($this->oObject, $this);
     }
 
-    /**
-     * Возвращает полный список свойств сущности
-     *
-     * @return mixed
-     */
-    public function getPropertyList()
+    
+    public function get()
     {
-        return $this->PluginProperty_Property_GetEntityPropertyList($this->oObject, $this);
+        return $this->PluginGeo_Geo_GetGeoTargets($this->oObject, $this);
     }
 
-    /**
-     * Возвращает значение конкретного свойства
-     * @see PluginProperty_ModuleProperty_EntityValue::getValueForDisplay
-     *
-     * @param int|string $sPropertyId ID или код свойства
-     *
-     * @return mixed
-     */
-    public function getPropertyValue($sPropertyId)
-    {
-        return $this->PluginProperty_Property_GetEntityPropertyValue($this->oObject, $this, $sPropertyId);
-    }
-
-    /**
-     * Возвращает объект конкретного свойства сущности
-     *
-     * @param int|string $sPropertyId ID или код свойства
-     *
-     * @return PluginProperty_ModuleProperty_EntityProperty|null
-     */
-    public function getProperty($sPropertyId)
-    {
-        return $this->PluginProperty_Property_GetEntityProperty($this->oObject, $this, $sPropertyId);
-    }
-
-    /**
-     * Возвращает тип объекта для дополнительных полей
-     *
-     * @return string
-     */
-    public function getPropertyTargetType()
-    {
-        if ($sType = $this->getParam('target_type')) {
-            return $sType;
-        }
-        /**
-         * Иначе дополнительно смотрим на наличие данного метода у сущности
-         * Это необходимо, если тип вычисляется динамически по какой-то своей логике
-         */
-        if (func_method_exists($this->oObject, 'getPropertyTargetType', 'public')) {
-            return call_user_func(array($this->oObject, 'getPropertyTargetType'));
-        }
-    }
 }
