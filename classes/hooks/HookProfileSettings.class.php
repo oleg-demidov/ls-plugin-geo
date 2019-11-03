@@ -18,8 +18,9 @@ class PluginGeo_HookProfileSettings extends Hook {
             'block' => 'geo',
             'params' => [
                 'plugin' => 'geo',
-                'target' => $aParams['oUserProfile'],
-                'target_type' => 'user_geo'
+                'target' => $aParams['oUser'],
+                'target_type' => 'user_geo',
+                'entity' => 'User_User'
             ],
             
         ], $nll);

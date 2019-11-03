@@ -52,7 +52,7 @@ class PluginGeo_BlockGeo extends Block
                 ]);                
                 
                 $this->Viewer_Assign('aGeoTargets', $aGeoTargets, true);
-                $this->SetTemplate('component@geo');
+                $this->SetTemplate('component@geo:geo');
 
             }
         }

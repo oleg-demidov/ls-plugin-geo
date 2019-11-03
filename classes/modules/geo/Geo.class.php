@@ -31,5 +31,7 @@ class PluginGeo_ModuleGeo extends ModuleORM
         parent::Init();
     }
     
-
+    public function ValidateEntityGeo($oEntity, $oBehavior) {
+        return true;
+    }
 }

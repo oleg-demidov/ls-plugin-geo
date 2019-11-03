@@ -8,6 +8,8 @@ $config['$root$']['db']['table']['geo_geo_region'] = '___db.table.prefix___geo_r
 
 $config['$root$']['db']['table']['geo_geo_city'] = '___db.table.prefix___geo_city';
 
+$config['$root$']['db']['table']['geo_geo_target'] = '___db.table.prefix___geo_target';
+
 
 
 return $config;
