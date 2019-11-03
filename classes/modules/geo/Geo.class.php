@@ -30,5 +30,6 @@ class PluginGeo_ModuleGeo extends ModuleORM
     public function Init() {
         parent::Init();
     }
+    
 
 }

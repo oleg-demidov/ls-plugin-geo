@@ -19,7 +19,7 @@
  *
  */
 
-class PluginGeo_ModuleGeo_EntityRegion extends EntityORM
+class PluginGeo_ModuleGeo_EntityRegion extends PluginGeo_ModuleGeo_EntityGeo
 {
     protected $aRelations = [
         'cities' =>     [ self::RELATION_TYPE_HAS_MANY, "PluginGeo_ModuleGeo_EntityCity", 'region_id' ],

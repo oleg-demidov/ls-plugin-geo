@@ -34,7 +34,6 @@ class PluginGeo_BlockGeo extends Block
     {
         $sEntity = $this->GetParam('entity');
         $oTarget = $this->GetParam('target');
-        $sTargetType = $this->GetParam('target_type');
 
         if (!$oTarget) {
             $oTarget = Engine::GetEntity($sEntity);
@@ -46,19 +45,17 @@ class PluginGeo_BlockGeo extends Block
              * Определяем нужное нам поведение
              */
             if ($oBehavior instanceof PluginGeo_ModuleGeo_BehaviorEntity) {
-                /**
-                 * Если в параметрах был тип, то переопределяем значение. Это необходимо для корректной работы, когда тип динамический.
-                 */
-                if ($sTargetType) {
-                    $oBehavior->setParam('target_type', $sTargetType);
-                }
-                $aProperties = $this->PluginGeo_Geo_GetGeoForUpdate($oBehavior->getPropertyTargetType(),
-                    $oTarget->getId());                
-                $this->Viewer_Assign('geo', $aProperties, true);
-                break;
+                
+                $aGeoTargets = $this->PluginGeo_Geo_GetTargetItemsByFilter([
+                    'target_type' => $oBehavior->getParam('target_type'),
+                    'target_id' => $oTarget->getId()
+                ]);                
+                
+                $this->Viewer_Assign('aGeoTargets', $aGeoTargets, true);
+                $this->SetTemplate('component@geo');
+
             }
         }
 
-        $this->SetTemplate('component@property:property.input.list');
     }
 }

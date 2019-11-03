@@ -25,7 +25,7 @@
  * @package application.modules.property
  * @since 2.0
  */
-class PluginGeo_ModuleGeo_EntityCountry extends EntityORM
+class PluginGeo_ModuleGeo_EntityCountry extends PluginGeo_ModuleGeo_EntityGeo
 {
 
     protected $aRelations = [
