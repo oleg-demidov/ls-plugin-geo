@@ -6,5 +6,8 @@
     },
     "templates": {
         "geo": "geo.tpl"
+    },
+    "scripts": {
+        "geo":"js/geo.js"
     }
 }

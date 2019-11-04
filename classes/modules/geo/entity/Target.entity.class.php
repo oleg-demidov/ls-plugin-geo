@@ -21,6 +21,10 @@
 
 class PluginGeo_ModuleGeo_EntityTarget extends EntityORM
 {
-
-   
+     protected $aRelations = [
+        'region'    => [ self::RELATION_TYPE_BELONGS_TO, "PluginGeo_ModuleGeo_EntityRegion", 'region_id' ],
+        'country'   => [ self::RELATION_TYPE_BELONGS_TO, "PluginGeo_ModuleGeo_EntityCountry", 'country_id' ],
+        'city'      => [ self::RELATION_TYPE_BELONGS_TO, "PluginGeo_ModuleGeo_EntityCity", 'city_id' ],
+    ];
+    
 }

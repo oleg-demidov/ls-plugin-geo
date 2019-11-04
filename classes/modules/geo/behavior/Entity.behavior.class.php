@@ -34,8 +34,13 @@ class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
      */
     protected $aParams = array(
         'target_type'   => '',
-        'field'         => 'geo'
+        'field'         => 'geo',
+        'require_country' => true,
+        'require_region' => true,
+        'require_city' => true
     );
+    
+    protected $aGeo;
     /**
      * Список хуков
      *
@@ -71,7 +76,7 @@ class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
      */
     public function CallbackAfterSave()
     {
-        $this->PluginProperty_Property_UpdatePropertiesValue($this->oObject->getPropertiesObject(), $this->oObject);
+        $this->PluginGeo_Geo_SaveGeo($this->oObject, $this);
     }
 
     /**
@@ -84,15 +89,27 @@ class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
     }
 
    
-    public function ValidateGeoCheck()
+    public function ValidateGeoCheck($aGeo)
     {
-        return $this->PluginGeo_Geo_ValidateEntityGeo($this->oObject, $this);
+        $this->aGeo = $aGeo;
+        return $this->PluginGeo_Geo_ValidateEntityGeo($this->oObject, $aGeo, $this);
+    }
+    
+    public function getGeoForSave($sKey = null) {
+        if($sKey)
+        {
+            return $this->aGeo[$sKey];
+        }
+        return $this->aGeo;
     }
 
     
     public function get()
     {
-        return $this->PluginGeo_Geo_GetGeoTargets($this->oObject, $this);
+        return $this->PluginGeo_Geo_GetTargetByFilter([
+            'target_type' => $this->getParam('target_type'),
+            'target_id' => $this->oObject->getId()
+        ]);
     }
 
 }

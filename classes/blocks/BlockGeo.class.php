@@ -46,12 +46,26 @@ class PluginGeo_BlockGeo extends Block
              */
             if ($oBehavior instanceof PluginGeo_ModuleGeo_BehaviorEntity) {
                 
-                $aGeoTargets = $this->PluginGeo_Geo_GetTargetItemsByFilter([
+                $oGeoTarget = $this->PluginGeo_Geo_GetTargetByFilter([
                     'target_type' => $oBehavior->getParam('target_type'),
                     'target_id' => $oTarget->getId()
                 ]);                
                 
-                $this->Viewer_Assign('aGeoTargets', $aGeoTargets, true);
+                $this->Viewer_Assign('oGeoTarget', $oGeoTarget);                 
+                        
+                $this->Viewer_Assign('oBehaviorGeo', $oBehavior); 
+                
+                $this->Viewer_Assign('aCountries', $this->PluginGeo_Geo_GetCountryItemsByFilter([
+                    'id' => 149
+                ]));
+                
+                if ($oGeoTarget and $oGeoTarget->getCountry()) 
+                {
+                    $this->Viewer_Assign('aRegions', $this->PluginGeo_Geo_GetRegionItemsByFilter([
+                        'country_id' => 149//$oGeoTarget->getCountry()->getId()
+                    ]));
+                }
+                
                 $this->SetTemplate('component@geo:geo');
 
             }
