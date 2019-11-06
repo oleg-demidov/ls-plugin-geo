@@ -15,10 +15,15 @@ return [
             'label' => 'Город',
             'emptyItem' => 'Выберите регион',
             'chooseItem' => 'Выберите город'
+        ],
+        'address' => [
+            'label' => 'Адрес'
         ]
     ],
     'validate' => [
         'not_fond_country' => 'Не найдена страна с ID "%%id%%"',
-        'not_fond_region' => 'Не найден регион'
+        'not_fond_region' => 'Не найден регион',
+        'not_fond_city' => 'Не найден город',
+        'empty_city_with_address' => 'Заполните поле город вместе с полем адрес'
     ]
 ];

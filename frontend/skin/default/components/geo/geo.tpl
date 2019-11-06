@@ -1,9 +1,10 @@
 
 <div class='geofield' data-geofield>
-
+    {*
+        Выбор страны
+    *}
     {$itemsCountry = []}
     {$itemsCountry[] = [
-        'value' => 0,
         'text' => {lang "plugin.geo.field.country.chooseItem"}
     ]}
     {foreach $aCountries as $item}
@@ -24,9 +25,16 @@
         label         = {lang "plugin.geo.field.country.label"}
         items         = $itemsCountry
         attributes    = ['data-country' => true]
-        require       = $oBehaviorGeo->getParam('require_country')
+        required      = $oBehaviorGeo->getParam('require_country')
         selected      = $selectedCountry}
 
+    {*
+        Выбор региона
+    *}
+    {$itemsRegion = []}
+    {$itemsRegion[] = [
+        'text' => {lang "plugin.geo.field.region.chooseItem"}
+    ]}
     {foreach $aRegions as $item}
         {$itemsRegion[] = [
             'value' => $item->getId(),
@@ -50,9 +58,16 @@
         items         = $itemsRegion
         disabled      = !$aRegions
         attributes    = ['data-region' => true]
-        require       = $oBehaviorGeo->getParam('require_region')
+        required      = $oBehaviorGeo->getParam('require_region')
         selected      = $selectedRegion}
 
+    {*
+        Выбор города
+    *}
+    {$itemsCity = []}
+    {$itemsCity[] = [
+        'text' => {lang "plugin.geo.field.city.chooseItem"}
+    ]}
     {foreach $aCities as $item}
         {$itemsCity[] = [
             'value' => $item->getId(),
@@ -74,9 +89,14 @@
         name          = "{$oBehaviorGeo->getParam('field')}[city]"
         label         = {lang "plugin.geo.field.city.label"}
         items         = $itemsCity
-        disabled      = !$aCities
         attributes    = ['data-city' => true]
-        require       = $oBehaviorGeo->getParam('require_city')
+        required      = $oBehaviorGeo->getParam('require_city')
         selected      = $selectedCity}
+        
+    {component 'bs-form' template='text'
+        name          = "{$oBehaviorGeo->getParam('field')}[address]"
+        label         = {lang "plugin.geo.field.address.label"}
+        required      = $oBehaviorGeo->getParam('require_address')
+        value         = $oGeoTarget->getAddress()}
 
 </div>

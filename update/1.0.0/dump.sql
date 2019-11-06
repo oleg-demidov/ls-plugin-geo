@@ -19531,6 +19531,7 @@ CREATE TABLE IF NOT EXISTS `prefix_geo_target` (
   KEY `city_id` (`city_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE `prefix_geo_target` ADD `address` VARCHAR(256) NULL DEFAULT NULL AFTER `city_id`;
 --
 -- Дамп данных таблицы `prefix_geo_target`
 --

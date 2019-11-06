@@ -37,10 +37,13 @@ class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
         'field'         => 'geo',
         'require_country' => true,
         'require_region' => true,
-        'require_city' => true
+        'require_city' => true,
+        'require_address' => true
     );
     
     protected $aGeo;
+    
+    protected $target;
     /**
      * Список хуков
      *
@@ -96,16 +99,40 @@ class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
     }
     
     public function getGeoForSave($sKey = null) {
-        if($sKey)
-        {
+        if($sKey){
+            if (!isset($this->aGeo[$sKey])) {
+                return null;
+            }
             return $this->aGeo[$sKey];
         }
         return $this->aGeo;
     }
 
     
-    public function get()
+    public function get($sKey = null)
     {
+        $oTarget = $this->getTarget();
+        
+        if($sKey){
+            $method = 'get'.ucfirst($sKey);
+            if (!$oTarget->$method()) {
+                return null;
+            }
+            return $oTarget->$method();
+        }
+        
+        return $oTarget;
+    }
+    
+    public function setTarget(Entity $target) {
+        $this->target = $target;
+    }
+    
+    public function getTarget(Entity $target) {
+        if($this->target){
+            return $this->target;
+        }
+        
         return $this->PluginGeo_Geo_GetTargetByFilter([
             'target_type' => $this->getParam('target_type'),
             'target_id' => $this->oObject->getId()

@@ -59,10 +59,17 @@ class PluginGeo_BlockGeo extends Block
                     'id' => 149
                 ]));
                 
-                if ($oGeoTarget and $oGeoTarget->getCountry()) 
-                {
+//                if ($oGeoTarget and $oGeoTarget->getCountry()) 
+//                {
                     $this->Viewer_Assign('aRegions', $this->PluginGeo_Geo_GetRegionItemsByFilter([
                         'country_id' => 149//$oGeoTarget->getCountry()->getId()
+                    ]));
+//                }
+                    
+                if ($oGeoTarget and $oGeoTarget->getRegion()) 
+                {
+                    $this->Viewer_Assign('aCities', $this->PluginGeo_Geo_GetCityItemsByFilter([
+                        'region_id' => $oGeoTarget->getRegion()->getId()
                     ]));
                 }
                 
