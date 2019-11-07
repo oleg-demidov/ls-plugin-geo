@@ -19,7 +19,7 @@ class PluginGeo extends Plugin
 
     public function Init()
     {
-        $this->Component_Add('geo:geo');
+//        $this->Component_Add('geo:geo');
         $this->Viewer_AppendScript(Plugin::GetTemplatePath(__CLASS__) . 'assets/js/init.js');
     }
 

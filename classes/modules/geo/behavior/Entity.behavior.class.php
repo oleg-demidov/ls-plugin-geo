@@ -35,9 +35,7 @@ class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
     protected $aParams = array(
         'target_type'   => '',
         'field'         => 'geo',
-        'require_country' => true,
-        'require_region' => true,
-        'require_city' => true
+        'require' => true
     );
     
     protected $aGeo;

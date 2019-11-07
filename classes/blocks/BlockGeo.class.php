@@ -55,18 +55,18 @@ class PluginGeo_BlockGeo extends Block
                         
                 $this->Viewer_Assign('oBehaviorGeo', $oBehavior); 
                 
-                $this->Viewer_Assign('aCountries', $this->PluginGeo_Geo_GetCountryItemsByFilter([
-                    'id' => 149
-                ]));
+//                $this->Viewer_Assign('aCountries', $this->PluginGeo_Geo_GetCountryItemsByFilter([
+//                    'id' => 149
+//                ]));
                 
-                if ($oGeoTarget and $oGeoTarget->getCountry()) 
-                {
-                    $this->Viewer_Assign('aRegions', $this->PluginGeo_Geo_GetRegionItemsByFilter([
-                        'country_id' => 149//$oGeoTarget->getCountry()->getId()
-                    ]));
-                }
+//                if ($oGeoTarget and $oGeoTarget->getCountry()) 
+//                {
+//                    $this->Viewer_Assign('aRegions', $this->PluginGeo_Geo_GetRegionItemsByFilter([
+//                        'country_id' => 149//$oGeoTarget->getCountry()->getId()
+//                    ]));
+//                }
                 
-                $this->SetTemplate('component@geo:geo');
+                $this->SetTemplate('component@geo:geo.autocomplete');
 
             }
         }

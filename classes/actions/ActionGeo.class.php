@@ -29,6 +29,8 @@ class PluginGeo_ActionGeo extends Action
     {
         
         $this->AddEventPreg( '/^ajax-load$/', '/^$/', 'EventLoad');
+        
+        $this->AddEventPreg( '/^autocomplete$/', '/^$/', 'EventAutoComplete');
     }
 
     public function EventLoad() 
@@ -62,6 +64,28 @@ class PluginGeo_ActionGeo extends Action
                 'text' => $this->Lang_Get("plugin.geo.field.{$sType}.chooseItem")
             ]
         ],$aResults);
+        
+        $this->Viewer_AssignAjax('result', $aResults);
+    }
+    
+    public function EventAutoComplete() {
+        $this->Viewer_SetResponseAjax('json');
+        
+        $aCities = $this->PluginGeo_Geo_GetCityItemsByFilter([
+            "#with" => ['region'],
+            '#where' => [
+                't.name_ru LIKE ?' => ['%' .getRequest('q'). '%']
+            ]
+        ]);
+        
+        $aResults = [];
+        foreach ($aCities as $city) {
+            $aResults[] = [
+                'value' => $city->getId(),
+                'text' => $city->getName(),
+                'html' => $city->getName() . '<br><small>' .$city->getRegion()->getName(). '</small>'
+            ];
+        }
         
         $this->Viewer_AssignAjax('result', $aResults);
     }

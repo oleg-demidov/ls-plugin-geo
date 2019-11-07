@@ -33,37 +33,13 @@ class PluginGeo_ModuleGeo extends ModuleORM
     
     public function ValidateEntityGeo(Entity $oEntity, array $aGeo, Behavior $oBehavior) {
                 
-        if(!$aGeo['country'] and !$oBehavior->getParam('require_country')){
+        if(!$aGeo['city'] and !$oBehavior->getParam('require')){
             return true;
         }
         
-        if(!$oCountry = $this->GetCountryById($aGeo['country'])){
-            return $this->Lang_Get('plugin.geo.validate.not_fond_country', ['id' => $aGeo['country']]);
-        }
-        
-        if(!$aGeo['region'] and !$oBehavior->getParam('require_region')){
-            return true;
-        }
-        
-        if(!$oRegion = $this->GetRegionByFilter([
-                'id' => $aGeo['region'],
-                'country_id' => $aGeo['country']
-            ]))
+        if(!$oCity = $this->GetCityById($aGeo['city']))
         {
-            return $this->Lang_Get('plugin.geo.validate.not_fond_region');
-        }
-        
-        if(!$aGeo['city'] and !$oBehavior->getParam('require_city')){
-            return true;
-        }
-        
-        if(!$oCity = $this->GetCityByFilter([
-                'id' => $aGeo['city'],
-                'country_id' => $aGeo['country'],
-                'region_id' => $aGeo['region'],
-            ]))
-        {
-            return $this->Lang_Get('plugin.geo.validate.not_fond_region');
+            return $this->Lang_Get('plugin.geo.validate.not_fond_city');
         }
         
         return true;
@@ -73,17 +49,11 @@ class PluginGeo_ModuleGeo extends ModuleORM
     {
         $oTarget = Engine::GetEntity('PluginGeo_Geo_Target');
         
-        if($oBehavior->getGeoForSave('country')){
-            $oTarget->setCountryId($oBehavior->getGeoForSave('country'));
-        }
+        $oCity = $this->GetCityById($oBehavior->getGeoForSave('city'));
         
-        if($oBehavior->getGeoForSave('region')){
-            $oTarget->setRegionId($oBehavior->getGeoForSave('region'));
-        }
-        
-        if($oBehavior->getGeoForSave('city')){
-            $oTarget->setCityId($oBehavior->getGeoForSave('city'));
-        }
+        $oTarget->setCountryId($oCity->getCountryId());
+        $oTarget->setRegionId($oCity->getRegionId());
+        $oTarget->setCityId($oCity->getId());
         
         $oTarget->setTargetType($oBehavior->getParam('target_type'));
         $oTarget->setTargetId($oEntity->getId());
