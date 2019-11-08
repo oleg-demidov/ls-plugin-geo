@@ -11,4 +11,3 @@
     require       = $oBehaviorGeo->getParam('require')
     value         = $value}
     
-    {component "bs-form.hidden" name = "{$oBehaviorGeo->getParam('field')}[city]" value  => $value}
