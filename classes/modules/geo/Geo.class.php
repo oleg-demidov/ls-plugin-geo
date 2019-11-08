@@ -60,4 +60,18 @@ class PluginGeo_ModuleGeo extends ModuleORM
         
         return $oTarget->Save();
     }
+    
+    public function ForUrlName($sName) {
+        return preg_replace(['\s', '\(', '\)'], ['_', '-', ''], $sName);
+    }
+    
+    public function RemoveGeo(Entity $oEntity, Behavior $oBehavior) {
+        if($oTarget = $this->GetTargetByFilter([
+            'target_type' => $oBehavior->getParam('target_type'),
+            'target_id' => $oEntity->getId()
+            ]))
+        {
+            $oTarget->Delete();
+        }
+    }
 }

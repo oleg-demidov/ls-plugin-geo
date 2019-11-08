@@ -9,7 +9,7 @@ class PluginGeo_HookProfileSettings extends Hook {
         /**
          * Хук на отображение админки
          */
-        $this->AddHook('template_profile_settings_end', 'SettingsGeo');
+        $this->AddHook('template_profile_settings_end', 'SettingsGeo', null, 1000);
     }
 
     public function SettingsGeo($aParams) { 

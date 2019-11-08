@@ -15,6 +15,9 @@ return [
             'label' => 'Город',
             'emptyItem' => 'Выберите регион',
             'chooseItem' => 'Выберите город'
+        ],
+        'address' => [
+            'label' => 'Адрес'
         ]
     ],
     'validate' => [
