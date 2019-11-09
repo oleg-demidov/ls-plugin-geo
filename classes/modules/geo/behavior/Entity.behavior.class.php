@@ -92,7 +92,7 @@ class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
     public function ValidateGeoCheck($aGeo)
     {
         $this->aGeo = $aGeo;
-        return $this->PluginGeo_Geo_ValidateEntityGeo($this->oObject, $aGeo, $this);
+        return $this->PluginGeo_Geo_ValidateEntityGeo($this->oObject, $this, $aGeo);
     }
     
     public function getGeoForSave($sKey = null) {

@@ -31,7 +31,7 @@ class PluginGeo_ModuleGeo extends ModuleORM
         parent::Init();
     }
     
-    public function ValidateEntityGeo(Entity $oEntity, array $aGeo, Behavior $oBehavior) {
+    public function ValidateEntityGeo(Entity $oEntity, Behavior $oBehavior, array $aGeo = []) {
                 
         if(!$aGeo['city'] and !$oBehavior->getParam('require')){
             return true;
@@ -47,6 +47,10 @@ class PluginGeo_ModuleGeo extends ModuleORM
     
     public function SaveGeo(Entity $oEntity, Behavior $oBehavior) 
     {
+        if(!$oBehavior->getGeoForSave('city')){
+            return;
+        }
+        
         $oTarget = Engine::GetEntity('PluginGeo_Geo_Target');
         
         $oCity = $this->GetCityById($oBehavior->getGeoForSave('city'));
