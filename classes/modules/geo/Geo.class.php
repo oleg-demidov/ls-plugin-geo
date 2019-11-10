@@ -51,7 +51,14 @@ class PluginGeo_ModuleGeo extends ModuleORM
             return;
         }
         
-        $oTarget = Engine::GetEntity('PluginGeo_Geo_Target');
+        $oTarget = $this->PluginGeo_Geo_GetTargetByFilter([
+            'target_type' => $oBehavior->getParam('target_type'),
+            'target_id' => $oEntity->getId()
+            ]);
+        if (!$oTarget) {
+            $oTarget = Engine::GetEntity('PluginGeo_Geo_Target');
+        }
+        
         
         $oCity = $this->GetCityById($oBehavior->getGeoForSave('city'));
         
@@ -76,6 +83,126 @@ class PluginGeo_ModuleGeo extends ModuleORM
             ]))
         {
             $oTarget->Delete();
+        }
+    }
+    
+    public function RewriteFilter(array $aFilter, Behavior $behavior,string $sEntityFull) {
+        $oEntitySample = Engine::GetEntity($sEntityFull);
+
+        if (!isset($aFilter['#join'])) {
+            $aFilter['#join'] = array();
+        }
+
+        if (!isset($aFilter['#select'])) {
+            $aFilter['#select'] = array();
+        }
+
+        if (array_key_exists('#geo', $aFilter)) {
+            $aGeo = [];
+            
+            $sJoin = "JOIN " . Config::Get('db.table.geo_geo_target') . " gt ON
+					t.`{$oEntitySample->_getPrimaryKey()}` = gt.target_id and
+					gt.target_type = '{$behavior->getParam('target_type')}'";
+                                        
+            if (isset($aFilter['#geo']['country'])) {
+                $sJoin .= "and gt.country_id IN ( ?d ) ";
+                $aGeo[] = $aFilter['#geo']['country'];
+            } 
+            
+            if (isset($aFilter['#geo']['region'])) {
+                $sJoin .= "and gt.region_id IN ( ?d ) ";
+                $aGeo[] = $aFilter['#geo']['region'];
+            }
+            
+            if (isset($aFilter['#geo']['city'])) {
+                $sJoin .= "and gt.city_id IN ( ?d ) ";
+                $aGeo[] = $aFilter['#geo']['city'];
+            }
+                                        
+            $aFilter['#join'][$sJoin] = $aGeo;
+            if (count($aFilter['#select'])) {
+                $aFilter['#select'][] = "distinct t.`{$oEntitySample->_getPrimaryKey()}`";
+            } else {
+                $aFilter['#select'][] = "distinct t.`{$oEntitySample->_getPrimaryKey()}`";
+                $aFilter['#select'][] = 't.*';
+            }
+        }
+        return $aFilter;
+    }
+    
+    public function RewriteGetItemsByFilter(array $aFilter, Behavior $behavior,string $sEntityFull)
+    {
+        if (!$aResult) {
+            return;
+        }
+        /**
+         * Список на входе может быть двух видов:
+         * 1 - одномерный массив
+         * 2 - двумерный, если применялась группировка (использование '#index-group')
+         *
+         * Поэтому сначала сформируем линейный список
+         */
+        if (isset($aFilter['#index-group']) and $aFilter['#index-group']) {
+            $aEntitiesWork = array();
+            foreach ($aResult as $aItems) {
+                foreach ($aItems as $oItem) {
+                    $aEntitiesWork[] = $oItem;
+                }
+            }
+        } else {
+            $aEntitiesWork = $aResult;
+        }
+
+        if (!$aEntitiesWork) {
+            return;
+        }
+        /**
+         * Проверяем необходимость цеплять категории
+         */
+        if (isset($aFilter['#with']['#geo'])) {
+            $this->AttachGeoForTargetItems($aEntitiesWork, $behavior->getParam('target_type'));
+        }
+    }
+    
+    public function AttachCategoriesForTargetItems($aEntityItems, $sTargetType)
+    {
+        if (!is_array($aEntityItems)) {
+            $aEntityItems = array($aEntityItems);
+        }
+        $aEntitiesId = array(0);
+        foreach ($aEntityItems as $oEntity) {
+            $aEntitiesId[] = $oEntity->getId();
+        }
+        /**
+         * Получаем таргеты для всех объектов
+         */
+        
+        $aTargets = $this->GetTargetItemsByFilter([
+            '#with' => ['city', 'region', 'country'],
+            'target_id in' => $aEntitiesId,
+            'target_type' => $sTargetType,
+            '#cache'       => array(
+                null,
+                array(
+                    $sEntityCategory . '_save',
+                    $sEntityCategory . '_delete',
+                    $sEntityTarget . '_save',
+                    $sEntityTarget . '_delete'
+                )
+            )
+        ]);
+        
+        
+       
+        /**
+         * Собираем данные
+         */
+        foreach ($aEntityItems as $oEntity) {
+            if (isset($aCategories[$oEntity->_getPrimaryKeyValue()])) {
+                $oEntity->_setData(array('_categories' => $aCategories[$oEntity->_getPrimaryKeyValue()]));
+            } else {
+                $oEntity->_setData(array('_categories' => array()));
+            }
         }
     }
 }
