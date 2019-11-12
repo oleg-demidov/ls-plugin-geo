@@ -87,6 +87,7 @@ class PluginGeo_ModuleGeo extends ModuleORM
     }
     
     public function RewriteFilter(array $aFilter, Behavior $behavior,string $sEntityFull) {
+
         $oEntitySample = Engine::GetEntity($sEntityFull);
 
         if (!isset($aFilter['#join'])) {
@@ -181,7 +182,6 @@ class PluginGeo_ModuleGeo extends ModuleORM
         ]);
         
         
-       
         /**
          * Собираем данные
          */
@@ -189,7 +189,7 @@ class PluginGeo_ModuleGeo extends ModuleORM
             if (isset($aTargets[$oEntity->_getPrimaryKeyValue()])) {
                 $oEntity->_setData(array('_geo_target' => $aTargets[$oEntity->_getPrimaryKeyValue()]));
             } else {
-                $oEntity->_setData(array('_geo_target' => array()));
+                $oEntity->_setData(array('_geo_target' => null));
             }
         }
     }
@@ -198,7 +198,8 @@ class PluginGeo_ModuleGeo extends ModuleORM
     {
         $target = $oEntity->_getDataOne('_geo_target');
         if (is_null($target)) {
-            $this->AttachCategoriesForTargetItems($oEntity, $sTargetType);
+            $this->AttachGeoForTargetItems($oEntity, $sTargetType);
+
             return $oEntity->_getDataOne('_geo_target');
         }
         return $target;

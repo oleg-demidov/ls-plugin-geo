@@ -112,18 +112,14 @@ class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
     {
         $oTarget = $this->getTarget();
         
-        if($sKey){
-            $method = 'get'.ucfirst($sKey);
-            if (!$oTarget->$method()) {
-                return null;
-            }
-            return $oTarget->$method();
+        if($sKey and $oTarget){
+            return $oTarget->_getDataOne($sKey);
         }
         
         return $oTarget;
     }
     
-    public function getTarget(Entity $target) {
+    public function getTarget() {
         
         return $this->PluginGeo_Geo_GetEntityTarget($this->oObject, $this->getParam('target_type'));
         

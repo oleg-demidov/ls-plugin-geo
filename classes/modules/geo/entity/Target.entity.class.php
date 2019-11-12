@@ -26,5 +26,6 @@ class PluginGeo_ModuleGeo_EntityTarget extends EntityORM
         'country'   => [ self::RELATION_TYPE_BELONGS_TO, "PluginGeo_ModuleGeo_EntityCountry", 'country_id' ],
         'city'      => [ self::RELATION_TYPE_BELONGS_TO, "PluginGeo_ModuleGeo_EntityCity", 'city_id' ],
     ];
+      
     
 }
