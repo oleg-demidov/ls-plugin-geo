@@ -105,32 +105,28 @@ class PluginGeo_ModuleGeo extends ModuleORM
 					gt.target_type = '{$behavior->getParam('target_type')}'";
                                         
             if (isset($aFilter['#geo']['country'])) {
-                $sJoin .= "and gt.country_id IN ( ?d ) ";
+                $sJoin .= " and gt.country_id = ?d  ";
                 $aGeo[] = $aFilter['#geo']['country'];
             } 
             
             if (isset($aFilter['#geo']['region'])) {
-                $sJoin .= "and gt.region_id IN ( ?d ) ";
+                $sJoin .= " and gt.region_id = ?d  ";
                 $aGeo[] = $aFilter['#geo']['region'];
             }
             
             if (isset($aFilter['#geo']['city'])) {
-                $sJoin .= "and gt.city_id IN ( ?d ) ";
+                $sJoin .= " and gt.city_id = ?d ";
                 $aGeo[] = $aFilter['#geo']['city'];
             }
                                         
             $aFilter['#join'][$sJoin] = $aGeo;
-            if (count($aFilter['#select'])) {
-                $aFilter['#select'][] = "distinct t.`{$oEntitySample->_getPrimaryKey()}`";
-            } else {
-                $aFilter['#select'][] = "distinct t.`{$oEntitySample->_getPrimaryKey()}`";
-                $aFilter['#select'][] = 't.*';
-            }
+            
         }
+        
         return $aFilter;
     }
     
-    public function RewriteGetItemsByFilter(array $aFilter, Behavior $behavior,string $sEntityFull)
+    public function RewriteGetItemsByFilter(array $aResult, Behavior $behavior, array $aFilter)
     {
         if (!$aResult) {
             return;
@@ -164,7 +160,7 @@ class PluginGeo_ModuleGeo extends ModuleORM
         }
     }
     
-    public function AttachCategoriesForTargetItems($aEntityItems, $sTargetType)
+    public function AttachGeoForTargetItems($aEntityItems, $sTargetType)
     {
         if (!is_array($aEntityItems)) {
             $aEntityItems = array($aEntityItems);
@@ -181,15 +177,7 @@ class PluginGeo_ModuleGeo extends ModuleORM
             '#with' => ['city', 'region', 'country'],
             'target_id in' => $aEntitiesId,
             'target_type' => $sTargetType,
-            '#cache'       => array(
-                null,
-                array(
-                    $sEntityCategory . '_save',
-                    $sEntityCategory . '_delete',
-                    $sEntityTarget . '_save',
-                    $sEntityTarget . '_delete'
-                )
-            )
+            '#index-from-primary'
         ]);
         
         
@@ -198,11 +186,21 @@ class PluginGeo_ModuleGeo extends ModuleORM
          * Собираем данные
          */
         foreach ($aEntityItems as $oEntity) {
-            if (isset($aCategories[$oEntity->_getPrimaryKeyValue()])) {
-                $oEntity->_setData(array('_categories' => $aCategories[$oEntity->_getPrimaryKeyValue()]));
+            if (isset($aTargets[$oEntity->_getPrimaryKeyValue()])) {
+                $oEntity->_setData(array('_geo_target' => $aTargets[$oEntity->_getPrimaryKeyValue()]));
             } else {
-                $oEntity->_setData(array('_categories' => array()));
+                $oEntity->_setData(array('_geo_target' => array()));
             }
         }
+    }
+    
+    public function GetEntityTarget($oEntity, $sTargetType)
+    {
+        $target = $oEntity->_getDataOne('_geo_target');
+        if (is_null($target)) {
+            $this->AttachCategoriesForTargetItems($oEntity, $sTargetType);
+            return $oEntity->_getDataOne('_geo_target');
+        }
+        return $target;
     }
 }

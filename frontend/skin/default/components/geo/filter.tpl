@@ -1,11 +1,7 @@
 
 {if $oGeoTarget and $oGeoTarget->getCity()}
-    {$geo = $oGeoTarget->getCity()}
-{/if}
-
-{if $geo}
-    {$text = $geo->getName()}
-    {$value = $geo->getId()}
+    {$text = $oGeoTarget->getCity()->getName()}
+    {$value = $oGeoTarget->getCity()->getId()}
 {/if}
 
 {if $oBehaviorGeo->getParam('label')}
@@ -13,12 +9,10 @@
 {/if}
 
 
-
 {component 'bs-form' template='select'
     name          = "{$oBehaviorGeo->getParam('field')}[city]"
     label         = $label
     placeholder   = $oBehaviorGeo->getParam('placeholder')
-    classes       = "js-geo-input"
     attributes    = [
         'data-city'         => true, 
         "autocomplete"      => "off", 
@@ -27,8 +21,4 @@
     ]
     require       = $oBehaviorGeo->getParam('require')
     value         = $value}
-    
-<button type="button" class="close field-clear d-none" data-btn-geo-clear aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-</button>
     

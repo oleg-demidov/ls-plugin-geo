@@ -73,9 +73,11 @@ class PluginGeo_ActionGeo extends Action
         
         $aCities = $this->PluginGeo_Geo_GetCityItemsByFilter([
             "#with" => ['region'],
+            'country_id' => 149,
             '#where' => [
                 't.name_ru LIKE ?' => ['%' .getRequest('q'). '%']
-            ]
+            ],
+            '#limit' => [0, 10]
         ]);
         
         $aResults = [];

@@ -25,7 +25,7 @@
  * @package application.blocks
  * @since 2.0
  */
-class PluginGeo_BlockGeo extends Block
+class PluginGeo_BlockFilter extends Block
 {
     /**
      * Запуск обработки
@@ -34,7 +34,6 @@ class PluginGeo_BlockGeo extends Block
     {
         $sEntity = $this->GetParam('entity');
         $oTarget = $this->GetParam('target');
-        $geo = $this->GetParam('geo');
 
         if (!$oTarget) {
             $oTarget = Engine::GetEntity($sEntity);
@@ -59,8 +58,6 @@ class PluginGeo_BlockGeo extends Block
                         
                 $this->Viewer_Assign('oBehaviorGeo', $oBehavior); 
                 
-                $this->Viewer_Assign('geo', $geo);
-                
 //                $this->Viewer_Assign('aCountries', $this->PluginGeo_Geo_GetCountryItemsByFilter([
 //                    'id' => 149
 //                ]));
@@ -72,7 +69,7 @@ class PluginGeo_BlockGeo extends Block
 //                    ]));
 //                }
                 
-                $this->SetTemplate('component@geo:geo.autocomplete');
+                $this->SetTemplate('component@geo:geo.filter');
 
             }
         }

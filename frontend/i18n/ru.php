@@ -20,6 +20,7 @@ return [
             'label' => 'Адрес'
         ]
     ],
+    'no_results_text' => 'Нет результатов',
     'validate' => [
         'not_fond_country' => 'Не найдена страна с ID "%%id%%"',
         'not_fond_region' => 'Не найден регион',

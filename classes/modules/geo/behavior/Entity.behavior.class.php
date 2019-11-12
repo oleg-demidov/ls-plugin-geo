@@ -35,7 +35,9 @@ class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
     protected $aParams = array(
         'target_type'   => '',
         'field'         => 'geo',
-        'require' => true
+        'require'       => true,
+        'label'         => 'plugin.geo.field.city.label',
+        'placeholder'   => ''
     );
     
     protected $aGeo;
@@ -121,19 +123,10 @@ class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
         return $oTarget;
     }
     
-    public function setTarget(Entity $target) {
-        $this->target = $target;
-    }
-    
     public function getTarget(Entity $target) {
-        if($this->target){
-            return $this->target;
-        }
         
-        return $this->PluginGeo_Geo_GetTargetByFilter([
-            'target_type' => $this->getParam('target_type'),
-            'target_id' => $this->oObject->getId()
-        ]);
+        return $this->PluginGeo_Geo_GetEntityTarget($this->oObject, $this->getParam('target_type'));
+        
     }
 
 }

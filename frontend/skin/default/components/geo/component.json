@@ -6,7 +6,8 @@
     },
     "templates": {
         "geo": "geo.tpl",
-        "autocomplete": "autocomplete.tpl"
+        "autocomplete": "autocomplete.tpl",
+        "filter": "filter.tpl"
     },
     "scripts": {
         "geo":"js/geo.js"
