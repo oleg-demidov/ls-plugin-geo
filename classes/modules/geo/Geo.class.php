@@ -31,7 +31,7 @@ class PluginGeo_ModuleGeo extends ModuleORM
         parent::Init();
     }
     
-    public function ValidateEntityGeo(Entity $oEntity, Behavior $oBehavior, array $aGeo = []) {
+    public function ValidateEntityGeo(Entity $oEntity, Behavior $oBehavior, $aGeo = []) {
                 
         if(!$aGeo['city'] and !$oBehavior->getParam('require')){
             return true;
