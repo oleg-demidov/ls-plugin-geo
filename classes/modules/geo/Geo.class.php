@@ -86,7 +86,7 @@ class PluginGeo_ModuleGeo extends ModuleORM
         }
     }
     
-    public function RewriteFilter(array $aFilter, Behavior $behavior,string $sEntityFull) {
+    public function RewriteFilter(array $aFilter, Behavior $behavior, $sEntityFull) {
 
         $oEntitySample = Engine::GetEntity($sEntityFull);
 

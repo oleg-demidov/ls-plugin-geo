@@ -27,8 +27,5 @@
     ]
     require       = $oBehaviorGeo->getParam('require')
     value         = $value}
-    
-<button type="button" class="close field-clear d-none" data-btn-geo-clear aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-</button>
+
     
