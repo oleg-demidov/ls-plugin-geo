@@ -18,13 +18,16 @@
     name          = "{$oBehaviorGeo->getParam('field')}[city]"
     label         = $label
     placeholder   = $oBehaviorGeo->getParam('placeholder')
-    classes       = "js-geo-input"
     attributes    = [
-        'data-city'         => true, 
+        'data-input'         => true, 
         "autocomplete"      => "off", 
         'data-default-text' => $text,
         'data-default-value'=> $value
     ]
+    attributesGroup = [
+        'data-city'         => true
+    ]
+    clear         = true
     require       = $oBehaviorGeo->getParam('require')
     value         = $value}
 
