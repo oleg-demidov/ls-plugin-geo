@@ -162,7 +162,7 @@ class PluginGeo_ModuleGeo extends ModuleORM
     }
     
     public function AttachGeoForTargetItems($aEntityItems, $sTargetType)
-    {
+    { 
         if (!is_array($aEntityItems)) {
             $aEntityItems = array($aEntityItems);
         }
@@ -178,7 +178,7 @@ class PluginGeo_ModuleGeo extends ModuleORM
             '#with' => ['city', 'region', 'country'],
             'target_id in' => $aEntitiesId,
             'target_type' => $sTargetType,
-            '#index-from-primary'
+            '#index-from' => 'target_id'
         ]);
         
         
