@@ -108,15 +108,37 @@ class PluginGeo_ModuleGeo_BehaviorEntity extends Behavior
     }
 
     
-    public function get($sKey = null)
+    public function city()
     {
         $oTarget = $this->getTarget();
         
-        if($sKey and $oTarget){
-            return $oTarget->_getDataOne($sKey);
+        if($oTarget){
+            return $oTarget->getCity();
         }
         
-        return $oTarget;
+        return null;
+    }
+    
+    public function region()
+    {
+        $oTarget = $this->getTarget();
+        
+        if($oTarget){
+            return $oTarget->getRegion();
+        }
+        
+        return null;
+    }
+    
+    public function country()
+    {
+        $oTarget = $this->getTarget();
+        
+        if($oTarget){
+            return $oTarget->getCountry();
+        }
+        
+        return null;
     }
     
     public function getTarget() {
